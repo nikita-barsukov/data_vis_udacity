@@ -1,0 +1,59 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+            <div class="row">
+                <div class='col-md-12'>
+                    <div class='page-header'>
+                        <h1>Interest rate and quality of loans in US states</h1>
+                        <h2><small>A part of Data Analyst nanodegree course, by <a rel="author" href="http://barsukov.net/">Nikita Barsukov</a></small></h2>
+                    </div>
+                </div>
+            </div>
+            <div class='row'>
+                <div class="col-md-8">
+                    <p>This is a grading project from course 'Make effective data visualization', a part of Data Analyst Nanodegree. Aim of this project is to select a <a href='https://docs.google.com/document/d/1w7KhqotVi5eoKE3I_AZHbsxdr-NmcWsLTIiZrpxWx4w/pub?embedded=true'>dataset provided by Udacity</a>, or own dataset and create a web visualization that tells a story in this data. I chose dataset of loans provided by Prosper, US lending marketplace. <a href='https://s3.amazonaws.com/udacity-hosted-downloads/ud651/prosperLoanData.csv'>CSV file</a> as well as file with <a href['https://docs.google.com/spreadsheets/d/1gDyi_L4UvIrLTEC6Wri5nbaMmkGmLQBk-Yx3z0XDEtI/edit?usp=sharing'>description of every column</a> is compiled by Udacity itself, it is available for download from its site.</p>
+                    <p>Dataset is very large, it has almost 140,000 rows and 81 variables. It contains various columns about loan and borrower, ex. demographic data of borrwer, loan interest rate, size, various loan classifications, etc.</p>
+                    <p>With data this big it is possible to construct a lot of different narratives. I decided to focus on loan rates by US state, and its relation to quality of loans. I chose categorical variable <code>LoanStatus</code> as the one that represents loan quality.</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Additional information</h4>
+                    <ul>
+                        <li>Sources, code documentation, snippets</li>
+                        <li>Project description</li>
+                        <li>Technical notes</li>
+                        <li>Code repository on Github</li>
+                    </ul>
+                </div>                
+            </div> 
+            <div class="row">
+                <div class="col-md-8">
+                    <div id='rate_quartiles'></div>
+                </div>
+            </div>   
+        </div>    
+
+
+
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
