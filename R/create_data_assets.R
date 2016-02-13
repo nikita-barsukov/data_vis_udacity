@@ -3,10 +3,18 @@ library(jsonlite)
 library(reshape2)
 library(scales)
 library(dplyr)
-temp = download.file("https://s3.amazonaws.com/udacity-hosted-downloads/ud651/prosperLoanData.csv", 
-                     destfile = "../data/raw_ds.csv", 
-                     method = "curl")
-ds = read.csv(text=temp, na.strings = c('', ' '))
+# temp = download.file("https://s3.amazonaws.com/udacity-hosted-downloads/ud651/prosperLoanData.csv", 
+#                      destfile = "../data/raw_ds.csv", 
+#                      method = "curl")
+
+
+states_map = fromJSON('../js/vendor/states_hash.json')
+states_map = do.call(rbind.data.frame,states_map)
+states_map = data.frame(abbr=row.names(states_map),
+                        name=states_map)
+colnames(states_map) = c('abbr', 'name')
+
+ds = read.csv('../data/raw_ds.csv', na.strings = c('', ' '))
 ds$LoanStatus = as.character(ds$LoanStatus)
 ds[grepl('Past Due', ds$LoanStatus),'LoanStatus'] = 'Past Due'
 # By state:
@@ -41,7 +49,11 @@ plot(pl_scatter)
 pl_data = interest_by_state[,c(2, 3, 4, 6)]
 pl_data = pl_data[with(pl_data, order(-q_2)), ]
 pl_data$state = reorder(pl_data$state , pl_data$q_2)
-write.csv(pl_data, '../data/interest_rate_state.csv', row.names = FALSE)
+zzz = merge(pl_data, states_map, by.x='state', by.y='abbr')
+zzz = zzz[-1]
+zzz$name = reorder(zzz$name , zzz$q_2)
+zzz = zzz[with(zzz, order(-q_2)), ]
+write.csv(zzz, '../data/interest_rate_state.csv', row.names = FALSE)
 
 pl_lines = ggplot(data=pl_data, aes(q_1, state)) +
   geom_segment(aes(xstart=q_1, xend=q_3, yend=state)) + 

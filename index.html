@@ -8,9 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <!-- <link rel="stylesheet" href="css/normalize.css">-->
+        <link rel="stylesheet" href="css/main.css"> 
     </head>
     <body>
         <div class="container">
@@ -42,18 +41,23 @@
                 </div>                
             </div> 
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <div id='rate_quartiles'></div>
                 </div>
-            </div>   
-        </div>    
-
-
-
+                <div class="col-md-4">
+                    <h2>Range of interest rates by state</h2>
+                    
+                    <p><svg width='6', height='6'><circle cx='2', cy='2', r='2', fill='gray'></circle></svg>Dot is median interest rate in state.</p>
+                    <p><svg width='15', height='6'><line x1='0', x2='15',y1=3, y2=3, stroke='black', stroke-width=4></line></svg>
+                    Line shows <a href='https://www.khanacademy.org/math/cc-sixth-grade-math/cc-6th-data-statistics/cc-6th/v/calculating-interquartile-range-iqr'>interquartile range</a> of interest rate. Left end is first quartile, right end is the third.</p>
+                </div>                
+            </div>
+        </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
         <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src='js/helpers.js'></script>
         <script src="js/main.js"></script>
     </body>
 </html>
