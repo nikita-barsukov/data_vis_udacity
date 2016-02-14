@@ -32,7 +32,6 @@ interest_by_state = do.call(rbind.data.frame, interest_by_state)
 colnames(interest_by_state) = c('q_0', 'q_1', 'q_2', 'q_3', 'q_4')
 interest_by_state$state = row.names(interest_by_state)
 
-
 ds_plot = data.frame(state=row.names(interest_by_state),
                      interest = interest_by_state$q_2,
                      bad_loans = st$share_of_bad_loans)
@@ -47,13 +46,11 @@ pl_scatter = ggplot(data=ds_plot, aes(x=bad_loans, y=interest)) +
 plot(pl_scatter)
 
 pl_data = interest_by_state[,c(2, 3, 4, 6)]
+pl_data = merge(pl_data, states_map, by.x='state', by.y='abbr')
 pl_data = pl_data[with(pl_data, order(-q_2)), ]
-pl_data$state = reorder(pl_data$state , pl_data$q_2)
-zzz = merge(pl_data, states_map, by.x='state', by.y='abbr')
-zzz = zzz[-1]
-zzz$name = reorder(zzz$name , zzz$q_2)
-zzz = zzz[with(zzz, order(-q_2)), ]
-write.csv(zzz, '../data/interest_rate_state.csv', row.names = FALSE)
+pl_data = pl_data[-1]
+pl_data$name = reorder(pl_data$name , pl_data$q_2)
+pl_data = rename(pl_data, state=name)
 
 pl_lines = ggplot(data=pl_data, aes(q_1, state)) +
   geom_segment(aes(xstart=q_1, xend=q_3, yend=state)) + 
@@ -64,4 +61,13 @@ pl_lines = ggplot(data=pl_data, aes(q_1, state)) +
   theme_light()
 
 plot(pl_lines)
+
+map_ds = sapply(st[c(-1, -9)], function(x) x/sum_by_state) %>% as.data.frame()
+map_ds$abbr = st$state
+map_ds$name = pl_data$state
+map_ds$interes = interest_by_state$q_2
+
+write.csv(pl_data, '../data/interest_rate_state.csv', row.names = FALSE)
+write.csv(ds_plot, '../data/interest_vs_bad_loans.csv', row.names = FALSE)
+write.csv(map_ds, '../data/map_data.csv', row.names = FALSE)
 
