@@ -8,13 +8,13 @@ library(dplyr)
 #                      method = "curl")
 
 
-states_map = fromJSON('../js/vendor/states_hash.json')
+states_map = fromJSON('js/vendor/states_hash.json')
 states_map = do.call(rbind.data.frame,states_map)
 states_map = data.frame(abbr=row.names(states_map),
                         name=states_map)
 colnames(states_map) = c('abbr', 'name')
 
-ds = read.csv('../data/raw_ds.csv', na.strings = c('', ' '))
+ds = read.csv('data/raw_ds.csv', na.strings = c('', ' '))
 ds$LoanStatus = as.character(ds$LoanStatus)
 ds[grepl('Past Due', ds$LoanStatus),'LoanStatus'] = 'Past Due'
 # By state:
@@ -64,10 +64,14 @@ plot(pl_lines)
 
 map_ds = sapply(st[c(-1, -9)], function(x) x/sum_by_state) %>% as.data.frame()
 map_ds$abbr = st$state
-map_ds$name = pl_data$state
-map_ds$interes = interest_by_state$q_2
+map_ds = merge(map_ds, states_map, by.x='abbr', by.y='abbr')
+map_ds$interest = interest_by_state$q_2
+map_ds = merge(map_ds, read.csv('data/state_ids.csv', sep=';', 
+                                colClasses = c('character', 'character')), 
+               by.x='name', by.y='name')
+map_ds$id = paste('US', map_ds$id, sep='')
 
-write.csv(pl_data, '../data/interest_rate_state.csv', row.names = FALSE)
-write.csv(ds_plot, '../data/interest_vs_bad_loans.csv', row.names = FALSE)
-write.csv(map_ds, '../data/map_data.csv', row.names = FALSE)
+write.csv(pl_data, 'data/interest_rate_state.csv', row.names = FALSE)
+write.csv(ds_plot, 'data/interest_vs_bad_loans.csv', row.names = FALSE)
+write.csv(map_ds, 'data/map_data.csv', row.names = FALSE)
 
