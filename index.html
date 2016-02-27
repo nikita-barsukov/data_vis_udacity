@@ -48,11 +48,12 @@
                 <div class="col-md-5">
                     <h2>Range of interest rates by state</h2>
                     
-                    <p><svg width='6', height='6'><circle cx='2', cy='2', r='2', fill='gray'></circle></svg>Dot is median interest rate in state.</p>
+                    <p><svg width='6', height='6'><circle cx='2', cy='2', r='2', fill='black'></circle></svg>Dot is median interest rate in state.</p>
                     <p><svg width='15', height='6'><line x1='0', x2='15',y1=3, y2=3, stroke='black', stroke-width=4></line></svg>
                     Line shows <a href='https://www.khanacademy.org/math/cc-sixth-grade-math/cc-6th-data-statistics/cc-6th/v/calculating-interquartile-range-iqr'>interquartile range</a> of interest rate. Left end is first quartile, right end is the third.</p>
                 </div>                
             </div>
+            <hr>
             <div class='row'>
                 <div class='col-md-7'>
                     <div id='map'></div>
@@ -64,6 +65,23 @@
                     <p>Tooltip shows share of loans by loan status. Bad statuses are highlighted <span style='color:#fc8d59'>in orange</span>, good ones are <span style='color:#91bfdb'>in blue color</span>.</p>
                 </div>
             </div>
+            <hr>
+            <div class='row'>
+                <div class='col-md-7'>
+                    <div id='scatterplot'></div>
+                </div>
+                <div class='col-md-5'>
+                    <h2>Interest rate and share of bad loans<br><small>in US states</small></h2>
+                    <p>Bad loans: loans with status:</p>
+                    <ul>
+                        <li>Cancelled</li>
+                        <li>Chargedoff</li>
+                        <li>Defaulted</li>
+                        <li>Past Due</li>
+                    </ul>
+                    <p>Hover over a dot to get a tooltip with exact values of average loan interest and share of bad loans.</p>
+                </div>                
+            </div>
         </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -74,7 +92,8 @@
         <script type="text/javascript" src='js/vendor/colorbrewer.js'></script>        
         <script type="text/javascript" src='js/helpers.js'></script>
         <script type="text/javascript" src='js/draw_range_plot.js'></script>
-        <script type="text/javascript" src='js/draw_map.js'></script>                
+        <script type="text/javascript" src='js/draw_map.js'></script>
+        <script type="text/javascript" src='js/draw_scatter.js'></script>
         <script src="js/main.js"></script>
     </body>
 </html>

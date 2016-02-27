@@ -35,6 +35,7 @@ interest_by_state$state = row.names(interest_by_state)
 ds_plot = data.frame(state=row.names(interest_by_state),
                      interest = interest_by_state$q_2,
                      bad_loans = st$share_of_bad_loans)
+ds_plot = merge(ds_plot, states_map, by.x='state', by.y='abbr')
 
 pl_scatter = ggplot(data=ds_plot, aes(x=bad_loans, y=interest)) +
   geom_point(size=3) +

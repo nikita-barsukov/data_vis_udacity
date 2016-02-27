@@ -2,7 +2,7 @@ function draw_map() {
     var width = 600,
         height= 400;
 
-    var tooltip = d3.select("#tooltip")      
+    var tooltip = d3.select("#tooltip")
 
     var projection = d3.geo.albersUsa()
         .scale(780)
@@ -73,8 +73,6 @@ function draw_map() {
 }
 
 function draw_tooltip_plot(t_tip, dataset, color){
-    // creating a dataset for a tooltip barchart
-    //    that shows % of loans by type
 
     t_tip.append('p').append('b')
         .text(dataset['name']);

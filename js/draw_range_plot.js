@@ -1,6 +1,6 @@
 function draw_range_plot() {
     d3.csv('data/interest_rate_state.csv', function(data){
-        var margin_scplt = {top: 5, right: 0, bottom: 35, left: 100}
+        var margin_scplt = {top: 5, right: 20, bottom: 35, left: 100}
         var width = 600 - margin_scplt.left - margin_scplt.right,
             height = 700 -  margin_scplt.top -  margin_scplt.bottom;
             
@@ -54,8 +54,8 @@ function draw_range_plot() {
             attr({
                 'cx': function(d){return quartile_x_func(d['q_2'])},
                 'cy': function(d){return quartile_y_func(d['state'])},
-                'fill': "gray",
-                'r': "3"
+                'fill': "black",
+                'r': "4"
             });
 
         quartile_plot.append("g")
