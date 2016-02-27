@@ -2,7 +2,7 @@ function draw_map() {
     var width = 600,
         height= 400;
 
-    var tooltip = d3.select("#tooltip")
+    var tooltip = d3.select("#tooltip");
 
     var projection = d3.geo.albersUsa()
         .scale(780)
