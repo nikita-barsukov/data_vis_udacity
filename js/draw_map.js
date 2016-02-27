@@ -20,8 +20,8 @@ function draw_map() {
         .attr("height", height);
 
     queue()
-        .defer(d3.json, "/js/vendor/USA.json")
-        .defer(d3.csv, "/data/map_data.csv")
+        .defer(d3.json, "js/vendor/USA.json")
+        .defer(d3.csv, "data/map_data.csv")
         .await(ready);
     
     function ready(error, us, dataset) {

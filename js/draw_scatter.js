@@ -1,5 +1,5 @@
 function draw_scatter(){
-    d3.csv('/data/interest_vs_bad_loans.csv', function(data){
+    d3.csv('data/interest_vs_bad_loans.csv', function(data){
         var margin_scplt = {top: 5, right: 20, bottom: 55, left: 50}
         var width = 600 - margin_scplt.left - margin_scplt.right,
             height = 500 -  margin_scplt.top -  margin_scplt.bottom;
