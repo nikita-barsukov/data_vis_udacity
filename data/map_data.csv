@@ -1,4 +1,4 @@
-"name","abbr","Cancelled","Chargedoff","Completed","Current","Defaulted","FinalPaymentInProgress","Past Due","interest","id"
+"name","abbr","Cancelled","Chargedoff","Completed","Current","Defaulted","Final Payment","Past Due","interest","id"
 "Alabama","AL",0,0.141155449672424,0.291244788564622,0.472900536033353,0.0726622989874926,0.00119118522930316,0.0208457415128052,0.208,"US01"
 "Alaska","AK",0,0.075,0.375,0.515,0.015,0.01,0.01,0.1747,"US02"
 "Arizona","AZ",0,0.123619147816938,0.324566017885324,0.486059968437664,0.0494476591267754,0.00210415570752236,0.0142030510257759,0.1845,"US04"

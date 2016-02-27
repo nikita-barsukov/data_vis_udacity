@@ -2,7 +2,7 @@ function draw_map() {
     var width = 600,
         height= 400;
 
-    var tooltip = $("#tooltip")      
+    var tooltip = d3.select("#tooltip")      
 
     var projection = d3.geo.albersUsa()
         .scale(780)
@@ -46,23 +46,96 @@ function draw_map() {
                         }
                 })
             .on('mouseover', function(d){
-                tooltip.css({
+                tooltip.style({
                     "display":"block",
-                    "top": (d3.event.pageY) + "px" ,
+                    "top": (d3.event.pageY - 20) + "px" ,
                     "left": (d3.event.pageX + 10) + "px"
                 });
-                tooltip.html('<h2>TOOLTIP</h2>')
+                datapoint = _.find(dataset, function(point){
+                    return point['id'] == d['id']
+                })
+                draw_tooltip_plot(tooltip, datapoint)
             })
             .on("mousemove", function(d){
-                tooltip.css({
-                    "top": (d3.event.pageY) + "px" ,
+                tooltip.style({
+                    "top": (d3.event.pageY - 20) + "px" ,
                     "left": (d3.event.pageX + 10) + "px"                    
                 })
             })
             .on("mouseout", function(d){
-                tooltip.css("display", "none");
-                tooltip.empty();
+                tooltip.style("display", "none");
+                tooltip.html("");
             });;
 
     }
+}
+
+function draw_tooltip_plot(t_tip, dataset){
+    // creating a dataset for a tooltip barchart
+    //    that shows % of loans by type
+
+    t_tip.append('p').append('b')
+        .text(dataset['name']);
+
+    t_tip.append('p')
+        .text('Avg. interest rate: ' + d3.format(".2%")(dataset['interest']));
+
+    var barchart_ds = []
+    var params_for_barchart = ["Cancelled","Chargedoff","Completed","Current","Defaulted","Final Payment","Past Due"]
+    Object.keys(dataset).forEach(function(d){
+        if (params_for_barchart.indexOf(d) > -1) {
+            barchart_ds.push({'key': d, 'value': dataset[d]})
+        }
+    })
+
+    var margin_scplt = {top: 5, right: 5, bottom: 35, left: 80}
+    var width = 400 - margin_scplt.left - margin_scplt.right,
+        height = 200 -  margin_scplt.top -  margin_scplt.bottom;
+            
+    var barchart_plot = t_tip.append('svg').
+        attr("width", width + margin_scplt['left'] + margin_scplt['right']).
+        attr("height", height + margin_scplt['top'] + margin_scplt['bottom']).
+        append("g").
+        attr("transform", "translate(" + margin_scplt.left + "," + margin_scplt.top + ")");
+
+    var x_scale_func = d3.scale.linear().
+        range([0, width]).
+        domain([0, 0.7])
+
+    var y_scale_func = d3.scale.ordinal().
+        rangeRoundBands([0, height], .1).
+        domain(params_for_barchart);
+
+    var x_axis_func = d3.svg.axis()
+        .scale(x_scale_func)
+        .orient("bottom")
+        .innerTickSize(-height)
+        .outerTickSize(0)
+        .tickPadding(10)
+        .tickFormat(d3.format('%'));
+
+    var y_axis_func = d3.svg.axis()
+        .scale(y_scale_func)
+        .orient("left")
+        .innerTickSize(-width)
+        .outerTickSize(0)
+        .tickPadding(10); 
+
+    barchart_plot.selectAll('rect').
+        data(barchart_ds).
+        enter().
+        append('rect').
+        attr("x", 0).
+        attr("width", function(d){return x_scale_func(d['value'])}).
+        attr("y", function(d) {return y_scale_func(d['key'])}).
+        attr('height', function(d){return y_scale_func.rangeBand()});
+
+    barchart_plot.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(x_axis_func)
+
+    barchart_plot.append("g")
+        .attr("class", "y axis")
+        .call(y_axis_func)     
 }

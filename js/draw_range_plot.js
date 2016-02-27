@@ -10,12 +10,12 @@ function draw_range_plot() {
             append("g").
             attr("transform", "translate(" + margin_scplt.left + "," + margin_scplt.top + ")");
         
-        states = data.map(function(d){return d['state']})
-        quartile_x_func = d3.scale.linear().
+        var states = data.map(function(d){return d['state']})
+        var quartile_x_func = d3.scale.linear().
             range([0, width]).
             domain([0.1, 0.3])
 
-        quartile_y_func = d3.scale.ordinal().
+        var quartile_y_func = d3.scale.ordinal().
             domain(states).
             rangeRoundBands([0, height], 1);
 
