@@ -1,0 +1,21 @@
+Summary
+=====
+
+This project is a grading project for a course 'Make Effective Data Visualization', a part of Udacity's nanodegree. I chose dataset with Loan Data from Prosper, which is given in the list of datasets in instructions to grading project. Focus of the writeup is to explore relation between median interest rate in a state and share of bad loans. The writeup is available on separate page, http://nikita-barsukov.github.io/data_vis_udacity/ 
+
+Design
+=======
+
+The raw data file from Udacity is 82MB, which contins data of individual loans. I used R scripts to aggregate data on state level and to generate encessary CSV files that I used for my visualizations. These scripts are part of that repository.
+
+
+
+Feedback
+=======
+
+
+
+Resources
+=======
+
+Full list of resources used in this project are given in separate file [Sources.md](https://github.com/nikita-barsukov/data_vis_udacity/blob/master/Sources.md)
