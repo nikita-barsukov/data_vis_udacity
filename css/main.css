@@ -22,15 +22,20 @@
   opacity: 0.2;
 }
 
-#map path{
+path{
   stroke: gray;
   stroke-width: 1px;    
 }
 
 #tooltip{
+  z-index: 10000;
   display: none;
   position: absolute;
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 5px;
   border: 2px solid gray;
+}
+
+path.highlighted {
+  stroke: black!important;
 }

@@ -54,7 +54,8 @@ function draw_map() {
                 datapoint = _.find(dataset, function(point){
                     return point['id'] == d['id']
                 })
-                draw_tooltip_plot(tooltip, datapoint)
+                draw_tooltip_plot(tooltip, datapoint, color_scale_func(datapoint['interest']));
+                d3.selectAll("." + d['id']).classed("highlighted", true).moveToFront()
             })
             .on("mousemove", function(d){
                 tooltip.style({
@@ -63,14 +64,15 @@ function draw_map() {
                 })
             })
             .on("mouseout", function(d){
+                d3.selectAll("." + d['id']).classed("highlighted", false)                
                 tooltip.style("display", "none");
                 tooltip.html("");
-            });;
+            });
 
     }
 }
 
-function draw_tooltip_plot(t_tip, dataset){
+function draw_tooltip_plot(t_tip, dataset, color){
     // creating a dataset for a tooltip barchart
     //    that shows % of loans by type
 
@@ -78,7 +80,7 @@ function draw_tooltip_plot(t_tip, dataset){
         .text(dataset['name']);
 
     t_tip.append('p')
-        .text('Avg. interest rate: ' + d3.format(".2%")(dataset['interest']));
+        .html('Avg. interest rate: <b>' + d3.format(".2%")(dataset['interest']) + '</b>');
 
     var barchart_ds = []
     var params_for_barchart = ["Cancelled","Chargedoff","Completed","Current","Defaulted","Final Payment","Past Due"]
@@ -125,14 +127,25 @@ function draw_tooltip_plot(t_tip, dataset){
         data(barchart_ds).
         enter().
         append('rect').
-        attr("x", 0).
-        attr("width", function(d){return x_scale_func(d['value'])}).
-        attr("y", function(d) {return y_scale_func(d['key'])}).
-        attr('height', function(d){return y_scale_func.rangeBand()});
+        attr({
+            'x': 0,
+            "width": function(d){return x_scale_func(d['value'])},
+            "y": function(d) {return y_scale_func(d['key'])},
+            'height': function(d){return y_scale_func.rangeBand()},
+            'fill': function(d){
+                if(['Cancelled', 'Chargedoff', 'Defaulted', 'Past Due'].indexOf(d['key']) > -1) {
+                    return '#fc8d59'
+                } else {
+                    return '#91bfdb'
+                }
+            }
+        });
 
-    barchart_plot.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+    barchart_plot.append("g").
+        attr({
+            'class': 'x axis',
+            "transform": "translate(0," + height + ")"
+        })
         .call(x_axis_func)
 
     barchart_plot.append("g")

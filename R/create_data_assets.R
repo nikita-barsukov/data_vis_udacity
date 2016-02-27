@@ -70,6 +70,8 @@ map_ds = merge(map_ds, read.csv('data/state_ids.csv', sep=';',
                                 colClasses = c('character', 'character')), 
                by.x='name', by.y='name')
 map_ds$id = paste('US', map_ds$id, sep='')
+map_ds$`Final Payment` = map_ds$FinalPaymentInProgress
+map_ds$FinalPaymentInProgress = NULL
 
 write.csv(pl_data, 'data/interest_rate_state.csv', row.names = FALSE)
 write.csv(ds_plot, 'data/interest_vs_bad_loans.csv', row.names = FALSE)

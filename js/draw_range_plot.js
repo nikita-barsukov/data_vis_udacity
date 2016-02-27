@@ -1,7 +1,7 @@
 function draw_range_plot() {
     d3.csv('data/interest_rate_state.csv', function(data){
         var margin_scplt = {top: 5, right: 0, bottom: 35, left: 100}
-        var width = 500 - margin_scplt.left - margin_scplt.right,
+        var width = 600 - margin_scplt.left - margin_scplt.right,
             height = 700 -  margin_scplt.top -  margin_scplt.bottom;
             
         var quartile_plot = d3.select("#rate_quartiles").append('svg').

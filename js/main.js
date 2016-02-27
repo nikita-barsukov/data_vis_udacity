@@ -1,5 +1,9 @@
 $(document).ready(function(){
-    var tooltip = d3.select("#tooltip");
+    d3.selection.prototype.moveToFront = function() {
+      return this.each(function(){
+        this.parentNode.appendChild(this);
+      });
+    };	
     draw_range_plot();
     draw_map();  
 })
