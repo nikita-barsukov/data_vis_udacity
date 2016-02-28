@@ -1,6 +1,6 @@
 function draw_scatter(){
     d3.csv('data/interest_vs_bad_loans.csv', function(data){
-        var margin_scplt = {top: 5, right: 20, bottom: 55, left: 50}
+        var margin_scplt = {top: 5, right: 20, bottom: 55, left: 50};
         var width = 600 - margin_scplt.left - margin_scplt.right,
             height = 500 -  margin_scplt.top -  margin_scplt.bottom;
         var tooltip = d3.select("#tooltip");
@@ -13,7 +13,7 @@ function draw_scatter(){
 
         var x_scale_func = d3.scale.linear().
             range([0, width]).
-            domain([0, 0.4])
+            domain([0, 0.4]);
 
         var y_scale_func = d3.scale.linear().
             range([height, 0]).
@@ -72,6 +72,9 @@ function draw_scatter(){
     })
 }
 
+// Adds content to tooltip on scatterplot
+// Tooltip has header with state name
+//    and table with interest rate and share of bad loans
 function scatter_tooltip(t_tip, dataset){
     t_tip.append('p').append('b').text(dataset['name']);
     var tbl = t_tip.append('table');

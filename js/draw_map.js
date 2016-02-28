@@ -10,7 +10,8 @@ function draw_map() {
 
     var color_scale_func = d3.scale.quantile()
         .domain([0.15,0.2])
-        .range(colorbrewer['OrRd'][5]); // Colorbrewer is a color palette library, js/vendor/colorbrewer.js
+        .range(colorbrewer['OrRd'][5]); // Colorbrewer is a color palette library, 
+                                        // Defined in js/vendor/colorbrewer.js
                                         // http://colorbrewer2.org/
                                         // https://github.com/mbostock/d3/blob/master/lib/colorbrewer/colorbrewer.js
 
@@ -45,7 +46,7 @@ function draw_map() {
                     if(typeof datapoint === 'undefined'){
                         return('#fff')
                     };
-                    return color_scale_func(datapoint['interest'])
+                    return color_scale_func(datapoint['interest']);
                 }
             })
             .on('mouseover', function(d){
@@ -54,6 +55,7 @@ function draw_map() {
                     "top": (d3.event.pageY - 20) + "px" ,
                     "left": (d3.event.pageX + 10) + "px"
                 });
+                // Finding data for hovered state
                 datapoint = _.find(dataset, function(point){
                     return point['id'] == d['id']
                 });
@@ -64,7 +66,7 @@ function draw_map() {
                 tooltip.style({
                     "top": (d3.event.pageY - 20) + "px" ,
                     "left": (d3.event.pageX + 10) + "px"                    
-                })
+                });
             })
             .on("mouseout", function(d){ // tooltip disappears when mouse is out from a state
                 d3.selectAll("." + d['id']).classed("highlighted", false);                
@@ -74,9 +76,8 @@ function draw_map() {
     }
 }
 
-// Puts plot with shares of loan types in each state
-//   to a tooltip
-//   and makes it visible 
+// Puts plot with barchart of shares of loan types in each state
+//   to a tooltip and makes it visible 
 function draw_tooltip_plot(t_tip, dataset, color){
     t_tip.append('p').append('b')
         .text(dataset['name']);
@@ -84,13 +85,17 @@ function draw_tooltip_plot(t_tip, dataset, color){
     t_tip.append('p')
         .html('Avg. interest rate: <b>' + d3.format(".2%")(dataset['interest']) + '</b>');
 
-    var barchart_ds = []
-    var params_for_barchart = ["Cancelled","Chargedoff","Completed","Current","Defaulted","Final Payment","Past Due"]
+    // Constructs dataset with shares of loans by type
+    //   used in barchart
+    //  Dataset in data/map_data.csv contains also state name, interest rate
+    //    so we need to have a separate dataset with just loan types and their shares by state 
+    var barchart_ds = [];
+    var params_for_barchart = ["Cancelled","Chargedoff","Completed","Current","Defaulted","Final Payment","Past Due"];
     Object.keys(dataset).forEach(function(d){
         if (params_for_barchart.indexOf(d) > -1) {
             barchart_ds.push({'key': d, 'value': dataset[d]})
         }
-    })
+    });
 
     var margin_scplt = {top: 5, right: 5, bottom: 35, left: 80}
     var width = 400 - margin_scplt.left - margin_scplt.right,
@@ -104,7 +109,7 @@ function draw_tooltip_plot(t_tip, dataset, color){
 
     var x_scale_func = d3.scale.linear().
         range([0, width]).
-        domain([0, 0.7])
+        domain([0, 0.7]);
 
     var y_scale_func = d3.scale.ordinal().
         rangeRoundBands([0, height], .1).
@@ -136,9 +141,9 @@ function draw_tooltip_plot(t_tip, dataset, color){
             'class': 'x axis',
             "transform": "translate(0," + height + ")"
         })
-        .call(x_axis_func)
+        .call(x_axis_func);
 
     barchart_plot.append("g")
         .attr("class", "y axis")
-        .call(y_axis_func)     
+        .call(y_axis_func);    
 }

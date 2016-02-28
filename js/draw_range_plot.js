@@ -13,7 +13,7 @@ function draw_range_plot() {
         var states = data.map(function(d){return d['state']})
         var quartile_x_func = d3.scale.linear().
             range([0, width]).
-            domain([0.1, 0.3])
+            domain([0.1, 0.3]);
 
         var quartile_y_func = d3.scale.ordinal().
             domain(states).
@@ -49,11 +49,11 @@ function draw_range_plot() {
         quartile_plot.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(x_axis_func)
+            .call(x_axis_func);
 
         quartile_plot.append("g")
             .attr("class", "y axis")
-            .call(y_axis_func)        
+            .call(y_axis_func);       
     })
 
 }

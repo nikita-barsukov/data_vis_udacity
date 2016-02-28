@@ -7,7 +7,7 @@ $(document).ready(function(){
         this.parentNode.appendChild(this);
       });
     };	
-    draw_range_plot(); // js/draw_range_plot.js
-    draw_map();        // js/draw_map.js
-    draw_scatter();    // js/draw_scatter.js
+    draw_range_plot(); // Defined in js/draw_range_plot.js
+    draw_map();        // Defined in js/draw_map.js
+    draw_scatter();    // Defined in js/draw_scatter.js
 })
