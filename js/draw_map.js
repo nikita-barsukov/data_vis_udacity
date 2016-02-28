@@ -71,12 +71,13 @@ function draw_map() {
                 });
             })
             .on("mouseout", function(d){ // tooltip disappears when mouse is out from a state
-                d3.selectAll("." + d['id']).classed("highlighted", false);                
+                d3.selectAll("." + d['id']).classed("highlighted", false);
                 tooltip.style("display", "none");
                 tooltip.html("");
             });
 
         var legend = map.append("g").attr("class", "legend");
+
         legend.append("rect")
             .attr("class", "legend-background")
             .attr("x", width - 120)
@@ -99,11 +100,11 @@ function draw_map() {
         legend.selectAll("text")
                 .data(color_scale_func.quantiles())
             .enter().append("text")
-                .attr("text-anchor", "start") // text-align
+                .attr("text-anchor", "start")
                 .attr("x", width - 100)
                 .attr("y", function(d, i){return 257 + i*23})
-                .attr("dx", 35) // padding-right
-                .attr("dy", 15) // vertical-align: used font size (copied from css. must be a better way)
+                .attr("dx", 35) 
+                .attr("dy", 15)
                 .attr("class", "legend")
                 .text(function (d){return d3.format(".2%")(d) } );
     }
