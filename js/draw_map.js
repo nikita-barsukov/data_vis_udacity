@@ -2,7 +2,7 @@ function draw_map() {
     var width = 600,
         height= 400;
 
-    var tooltip = d3.select("#tooltip");
+    var tooltip = d3.select("#tooltip"); //initial style is in css/main.css
 
     var projection = d3.geo.albersUsa()
         .scale(780)
@@ -10,7 +10,9 @@ function draw_map() {
 
     var color_scale_func = d3.scale.quantile()
         .domain([0.15,0.2])
-        .range(colorbrewer['OrRd'][5]); // Colorbrewer is a color palette library.
+        .range(colorbrewer['OrRd'][5]); // Colorbrewer is a color palette library, js/vendor/colorbrewer.js
+                                        // http://colorbrewer2.org/
+                                        // https://github.com/mbostock/d3/blob/master/lib/colorbrewer/colorbrewer.js
 
     var path = d3.geo.path()
         .projection(projection);
@@ -25,37 +27,38 @@ function draw_map() {
         .await(ready);
     
     function ready(error, us, dataset) {
-        map.selectAll('path')
+        map.selectAll('path') // drawing a map
             .data(topojson.feature(us, us.objects.units).features)
             .enter().append('path')
             .attr({
                 'd': path,
                 'class': function(d){return d['id']} ,
                 'fill': function(d){
-                            datapoint = _.find(dataset, function(point){
-                                return point['id'] == d['id']
-                            })
-                            // DC is absent from map dataset
-                            // Since it's too small to be noticeable on map,
-                            // Instead of fixing data
-                            // I just return white color for DC polygon fill.
-                            if(typeof datapoint === 'undefined'){
-                                return('#fff')
-                            };
-                            return color_scale_func(datapoint['interest'])
-                        }
-                })
+                    // finding loan quality data from dataset by state ID
+                    datapoint = _.find(dataset, function(point){
+                        return point['id'] == d['id']
+                    });
+                    // DC is absent from map dataset
+                    // Since it's too small to be noticeable on map,
+                    // Instead of fixing data
+                    // I just return white color for DC polygon fill.
+                    if(typeof datapoint === 'undefined'){
+                        return('#fff')
+                    };
+                    return color_scale_func(datapoint['interest'])
+                }
+            })
             .on('mouseover', function(d){
-                tooltip.style({
+                tooltip.style({ // tooltip appears on mouseover
                     "display":"block",
                     "top": (d3.event.pageY - 20) + "px" ,
                     "left": (d3.event.pageX + 10) + "px"
                 });
                 datapoint = _.find(dataset, function(point){
                     return point['id'] == d['id']
-                })
+                });
                 draw_tooltip_plot(tooltip, datapoint, color_scale_func(datapoint['interest']));
-                d3.selectAll("." + d['id']).classed("highlighted", true).moveToFront()
+                d3.selectAll("." + d['id']).classed("highlighted", true).moveToFront();
             })
             .on("mousemove", function(d){
                 tooltip.style({
@@ -63,17 +66,18 @@ function draw_map() {
                     "left": (d3.event.pageX + 10) + "px"                    
                 })
             })
-            .on("mouseout", function(d){
-                d3.selectAll("." + d['id']).classed("highlighted", false)                
+            .on("mouseout", function(d){ // tooltip disappears when mouse is out from a state
+                d3.selectAll("." + d['id']).classed("highlighted", false);                
                 tooltip.style("display", "none");
                 tooltip.html("");
             });
-
     }
 }
 
+// Puts plot with shares of loan types in each state
+//   to a tooltip
+//   and makes it visible 
 function draw_tooltip_plot(t_tip, dataset, color){
-
     t_tip.append('p').append('b')
         .text(dataset['name']);
 
@@ -106,20 +110,8 @@ function draw_tooltip_plot(t_tip, dataset, color){
         rangeRoundBands([0, height], .1).
         domain(params_for_barchart);
 
-    var x_axis_func = d3.svg.axis()
-        .scale(x_scale_func)
-        .orient("bottom")
-        .innerTickSize(-height)
-        .outerTickSize(0)
-        .tickPadding(10)
-        .tickFormat(d3.format('%'));
-
-    var y_axis_func = d3.svg.axis()
-        .scale(y_scale_func)
-        .orient("left")
-        .innerTickSize(-width)
-        .outerTickSize(0)
-        .tickPadding(10); 
+    var x_axis_func = generate_axis(x_scale_func, height, 'bottom').tickFormat(d3.format('%'));
+    var y_axis_func = generate_axis(y_scale_func, width, 'left');
 
     barchart_plot.selectAll('rect').
         data(barchart_ds).

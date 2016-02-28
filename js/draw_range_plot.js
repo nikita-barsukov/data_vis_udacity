@@ -19,20 +19,8 @@ function draw_range_plot() {
             domain(states).
             rangeRoundBands([0, height], 1);
 
-        var x_axis_func = d3.svg.axis()
-            .scale(quartile_x_func)
-            .orient("bottom")
-            .innerTickSize(-height)
-            .outerTickSize(0)
-            .tickPadding(10)
-            .tickFormat(d3.format('%'));
-
-        var y_axis_func = d3.svg.axis()
-            .scale(quartile_y_func)
-            .orient("left")
-            .innerTickSize(-width)
-            .outerTickSize(0)
-            .tickPadding(10);        
+        var x_axis_func = generate_axis(quartile_x_func, height, 'bottom').tickFormat(d3.format('%'));
+        var y_axis_func = generate_axis(quartile_y_func, width, 'left');      
 
         quartile_plot.selectAll('line').
             data(data).

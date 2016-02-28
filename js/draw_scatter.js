@@ -19,21 +19,8 @@ function draw_scatter(){
             range([height, 0]).
             domain([0.14, 0.22]);
 
-        var x_axis_func = d3.svg.axis()
-            .scale(x_scale_func)
-            .orient("bottom")
-            .innerTickSize(-height)
-            .outerTickSize(0)
-            .tickPadding(10)
-            .tickFormat(d3.format('%'));
-
-        var y_axis_func = d3.svg.axis()
-            .scale(y_scale_func)
-            .orient("left")
-            .innerTickSize(-width)
-            .outerTickSize(0)
-            .tickPadding(10)
-            .tickFormat(d3.format('%'));
+        var x_axis_func = generate_axis(x_scale_func, height, 'bottom').tickFormat(d3.format('%'));
+        var y_axis_func = generate_axis(y_scale_func, width, 'left').tickFormat(d3.format('%'));
 
         scatterplot.selectAll('circle').
             data(data).
