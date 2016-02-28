@@ -1,8 +1,9 @@
 function draw_map() {
-    var width = 600,
+    var width = 650,
         height= 400;
 
     var tooltip = d3.select("#tooltip"); //initial style is in css/main.css
+    var color_buckets = 5;
 
     var projection = d3.geo.albersUsa()
         .scale(780)
@@ -10,10 +11,11 @@ function draw_map() {
 
     var color_scale_func = d3.scale.quantile()
         .domain([0.15,0.2])
-        .range(colorbrewer['OrRd'][5]); // Colorbrewer is a color palette library, 
-                                        // Defined in js/vendor/colorbrewer.js
-                                        // http://colorbrewer2.org/
-                                        // https://github.com/mbostock/d3/blob/master/lib/colorbrewer/colorbrewer.js
+        .range(colorbrewer['OrRd'][color_buckets]); 
+        // Colorbrewer is a color palette library, 
+        // Defined in js/vendor/colorbrewer.js
+        // http://colorbrewer2.org/
+        // https://github.com/mbostock/d3/blob/master/lib/colorbrewer/colorbrewer.js
 
     var path = d3.geo.path()
         .projection(projection);
@@ -73,77 +75,36 @@ function draw_map() {
                 tooltip.style("display", "none");
                 tooltip.html("");
             });
+
+        var legend = map.append("g").attr("class", "legend");
+        legend.append("rect")
+            .attr("class", "legend-background")
+            .attr("x", width - 120)
+            .attr("y", 240)
+            .attr("rx", 10)
+            .attr("ry", 10)
+            .attr("width", 100)
+            .attr("height", 45 + 22 * (d3.range(color_buckets).length - 1));
+
+        legend.selectAll(".legend-block")
+            .data(d3.range(color_buckets))
+            .enter().append("rect")
+                .attr("width", 40)
+                .attr("height", 20)
+                .attr("y", function(d, i){ return 245 + i*23;})
+                .attr("x", width - 110)
+                .attr("fill", function(d,i){return colorbrewer['OrRd'][color_buckets][i]})
+                .attr("class", "legend-block");
+
+        legend.selectAll("text")
+                .data(color_scale_func.quantiles())
+            .enter().append("text")
+                .attr("text-anchor", "start") // text-align
+                .attr("x", width - 100)
+                .attr("y", function(d, i){return 257 + i*23})
+                .attr("dx", 35) // padding-right
+                .attr("dy", 15) // vertical-align: used font size (copied from css. must be a better way)
+                .attr("class", "legend")
+                .text(function (d){return d3.format(".2%")(d) } );
     }
-}
-
-// Puts plot with barchart of shares of loan types in each state
-//   to a tooltip and makes it visible 
-function draw_tooltip_plot(t_tip, dataset, color){
-    t_tip.append('p').append('b')
-        .text(dataset['name']);
-
-    t_tip.append('p')
-        .html('Avg. interest rate: <b>' + d3.format(".2%")(dataset['interest']) + '</b>');
-
-    // Constructs dataset with shares of loans by type
-    //   used in barchart
-    //  Dataset in data/map_data.csv contains also state name, interest rate
-    //    so we need to have a separate dataset with just loan types and their shares by state 
-    var barchart_ds = [];
-    var params_for_barchart = ["Cancelled","Chargedoff","Completed","Current","Defaulted","Final Payment","Past Due"];
-    Object.keys(dataset).forEach(function(d){
-        if (params_for_barchart.indexOf(d) > -1) {
-            barchart_ds.push({'key': d, 'value': dataset[d]})
-        }
-    });
-
-    var margin_scplt = {top: 5, right: 5, bottom: 35, left: 80}
-    var width = 400 - margin_scplt.left - margin_scplt.right,
-        height = 200 -  margin_scplt.top -  margin_scplt.bottom;
-            
-    var barchart_plot = t_tip.append('svg').
-        attr("width", width + margin_scplt['left'] + margin_scplt['right']).
-        attr("height", height + margin_scplt['top'] + margin_scplt['bottom']).
-        append("g").
-        attr("transform", "translate(" + margin_scplt.left + "," + margin_scplt.top + ")");
-
-    var x_scale_func = d3.scale.linear().
-        range([0, width]).
-        domain([0, 0.7]);
-
-    var y_scale_func = d3.scale.ordinal().
-        rangeRoundBands([0, height], .1).
-        domain(params_for_barchart);
-
-    var x_axis_func = generate_axis(x_scale_func, height, 'bottom').tickFormat(d3.format('%'));
-    var y_axis_func = generate_axis(y_scale_func, width, 'left');
-
-    barchart_plot.selectAll('rect').
-        data(barchart_ds).
-        enter().
-        append('rect').
-        attr({
-            'x': 0,
-            "width": function(d){return x_scale_func(d['value'])},
-            "y": function(d) {return y_scale_func(d['key'])},
-            'height': function(d){return y_scale_func.rangeBand()},
-            'fill': function(d){
-                if(['Cancelled', 'Chargedoff', 'Defaulted', 'Past Due'].indexOf(d['key']) > -1) {
-                    return '#fc8d59'
-                } else {
-                    return '#91bfdb'
-                }
-            }
-        });
-
-    barchart_plot.append("g").
-        attr({
-            'class': 'x axis',
-            "transform": "translate(0," + height + ")"
-        })
-        .call(x_axis_func);
-
-    barchart_plot.append("g")
-        .attr("class", "y axis")
-        .call(y_axis_func);    
 }
