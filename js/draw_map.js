@@ -79,13 +79,15 @@ function draw_map() {
         var legend = map.append("g").attr("class", "legend");
 
         legend.append("rect")
-            .attr("class", "legend-background")
-            .attr("x", width - 120)
-            .attr("y", 240)
-            .attr("rx", 10)
-            .attr("ry", 10)
-            .attr("width", 100)
-            .attr("height", 45 + 22 * (d3.range(color_buckets).length - 1));
+            .attr({
+                "class": "legend-background",
+                "x": width - 120,
+                "y": 240,
+                "rx": 10,
+                "ry": 10,
+                "width": 100,
+                "height": 45 + 22 * (d3.range(color_buckets).length - 1)
+            });
 
         legend.selectAll(".legend-block")
             .data(d3.range(color_buckets))
