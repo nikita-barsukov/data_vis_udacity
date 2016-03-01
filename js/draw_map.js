@@ -76,7 +76,18 @@ function draw_map() {
                 tooltip.html("");
             });
 
-        var legend = map.append("g").attr("class", "legend");
+        var legend = map.append("g")
+            .attr({
+                "class": "legend",
+                "transform": "translate(10,0)"
+            });
+
+        legend.append('text')
+            .attr({
+                'x': width-110,
+                'y': 240
+            })
+            .text('Interest rate');
 
         legend.append("rect")
             .attr({
@@ -92,22 +103,27 @@ function draw_map() {
         legend.selectAll(".legend-block")
             .data(d3.range(color_buckets))
             .enter().append("rect")
-                .attr("width", 40)
-                .attr("height", 20)
-                .attr("y", function(d, i){ return 245 + i*23;})
-                .attr("x", width - 110)
-                .attr("fill", function(d,i){return colorbrewer['OrRd'][color_buckets][i]})
-                .attr("class", "legend-block");
+                .attr({
+                    "width": 40,
+                    "height": 20,
+                    "y": function(d, i){ return 245 + i*23;},
+                    "x": width - 110,
+                    "fill": function(d,i){return colorbrewer['OrRd'][color_buckets][i]},
+                    class: 'legend-block'
+                })
 
-        legend.selectAll("text")
-                .data(color_scale_func.quantiles())
-            .enter().append("text")
-                .attr("text-anchor", "start")
-                .attr("x", width - 100)
-                .attr("y", function(d, i){return 257 + i*23})
-                .attr("dx", 35) 
-                .attr("dy", 15)
-                .attr("class", "legend")
-                .text(function (d){return d3.format(".2%")(d) } );
+        legend.selectAll(".legend-label")
+            .data(color_scale_func.quantiles())
+            .enter()
+            .append("text")
+            .attr({
+                "text-anchor": "start",
+                "x": width - 100,
+                "y": function(d, i){return 257 + i*23},
+                "dx": 35,
+                "dy": 15,
+                "class": "legend-label",
+            })
+            .text(function (d){return d3.format(".2%")(d) } );
     }
 }

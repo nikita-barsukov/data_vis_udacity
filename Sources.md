@@ -2,8 +2,12 @@ Code libraries
 ---------
 * http://getbootstrap.com/css/
 * https://d3js.org/
+* https://developer.mozilla.org/en-US/docs/Web/SVG/Element
 
-
+Repositories
+-----------
+ * https://github.com/nikita-barsukov/blog
+ * https://github.com/nikita-barsukov/old_barsukov
 
 Code snippets
 ----------
