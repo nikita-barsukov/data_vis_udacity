@@ -59,7 +59,7 @@ function draw_scatter(){
             .attr("x", width/2-100)
             .attr("y", 50)
             .attr("dx", ".71em")
-            .text("Avg. interest rate");
+            .text("Share of bad loans");
 
         scatterplot.append("g")
             .attr("class", "y axis")
@@ -68,7 +68,17 @@ function draw_scatter(){
             .attr("transform", "rotate(-90)")
             .attr("y", 15)
             .style("text-anchor", "end")
-            .text("Share of bad loans");
+            .text("Avg. interest rate");
+
+        scatterplot.append('line')
+            .attr({
+                'x1': x_scale_func(0.05),
+                'x2': x_scale_func(0.35),
+                'y1': y_scale_func(regression_func(0.05)),
+                'y2': y_scale_func(regression_func(0.35)),
+                'stroke': "#A31F71",
+                'stroke-width': "1"
+            })
     })
 }
 
@@ -86,4 +96,11 @@ function scatter_tooltip(t_tip, dataset){
     var row_2 = tbl.append('tr')
     row_2.append('td').text('Share of bad loans:');
     row_2.append('td').text(d3.format(".2%")(dataset['bad_loans']));
+}
+
+// Regresison line of points in scatterplot
+//  Using lm model, excluding outlier states Maine and Iowa
+//  Parameters calculated in R script, R/create_data_assets.R
+function regression_func(bad_loans) {
+    return 0.1362 * bad_loans + 0.1641
 }

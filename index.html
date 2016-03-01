@@ -84,7 +84,7 @@
             <div class='row'>
                 <div class='col-md-7'>
                     <div id='scatterplot'></div>
-                    <p>This is perhaps the most interesting plot in this report. Indeed the interest rate increase with share of bad loans. However there are two distinct outlier states: Maine and Iowa. They have by far largest share of bad loans, above 35% each, while median interest rate is the lowest, around 15%.</p>
+                    <p>This is perhaps the most interesting plot in this report. Indeed the interest rate increase with share of bad loans. However there are two distinct outlier states: Maine and Iowa. They have by far largest share of bad loans, above 36% each, while median interest rate is the lowest, around 15%.</p>
                 </div>
                 <div class='col-md-5'>
                     <h2>Interest rate and share of bad loans<br><small>in US states</small></h2>
@@ -96,6 +96,8 @@
                         <li>Past Due</li>
                     </ul>
                     <p>Hover over a dot to get a tooltip with exact values of average loan interest and share of bad loans.</p>
+                    <p>Purple line <svg width='20', height='6'><line x1='0', x2='20',y1=3, y2=3, stroke='#A31F71', stroke-width=4></svg> is a regression line of all the datapoints excluding outliers, Maine and Iowa. </p>
+                    <p>R<sup>2</sup> coefficient of this line is 0.3222. Correlation coefficient is 0.568 on points without outliers, and -0.078 if we include outlier points to the datatset.</p>
                     <p>Note the y axis starts at 14%, not at 0%.</p>
                 </div>                
             </div>

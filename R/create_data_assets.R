@@ -40,6 +40,7 @@ ds_plot = merge(ds_plot, states_map, by.x='state', by.y='abbr')
 pl_scatter = ggplot(data=ds_plot, aes(x=bad_loans, y=interest)) +
   geom_point(size=3) +
   ggtitle('Interest rate and bad loans by state') +
+  geom_smooth(data = subset(ds_plot, bad_loans < 0.3), method='lm', se=F) +
   scale_x_continuous(labels=percent, name='Share of bad loans') +
   scale_y_continuous(labels=percent, name='Median interest rate') +
   theme_light()
@@ -73,6 +74,10 @@ map_ds = merge(map_ds, read.csv('data/state_ids.csv', sep=';',
 map_ds$id = paste('US', map_ds$id, sep='')
 map_ds$`Final Payment` = map_ds$FinalPaymentInProgress
 map_ds$FinalPaymentInProgress = NULL
+
+lm.obj = lm(bad_loans ~ interest, subset(ds_plot, bad_loans < 0.3))
+print(lm.obj)
+print(summary(lm.obj))
 
 write.csv(pl_data, 'data/interest_rate_state.csv', row.names = FALSE)
 write.csv(ds_plot, 'data/interest_vs_bad_loans.csv', row.names = FALSE)
