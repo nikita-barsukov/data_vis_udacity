@@ -19,7 +19,6 @@ Loans dataset was optimal choice. It wasn't too large, like PISA dataset, but it
 
 The raw data file is 82MB, it contins data of individual loans. Since my focus was state level data, I used R scripts to aggregate data and to generate necessary CSV files that I used for my visualizations. These scripts are part of that repository. 
 
-
 I did not use any Javascript framwork, like Backbone, or React, to organize my code. I simply splitted into several functions, each of these functions draws single visualization. Other choices of front-end libraries are very straightforward: d3.js for data visualization, Bootstrap 3 for layout, Underscore.js for array manipulation.
 
 Feedback
